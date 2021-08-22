@@ -2,8 +2,21 @@ extern crate nalgebra as na;
 
 use macroquad::prelude::*;
 use core::f64::consts::PI;
-use na::{Vector3, Rotation3};
+//use na::{Vector3, Rotation3};
+use na::{Vector3, Rotation3, Isometry3};
 use std::process::exit;
+
+mod thing;
+// use crate::thing::thing::Thing;
+use crate::thing::thing::make_cube;
+use crate::thing::thing::transform;
+// use crate::make_cube;
+// mod thing_lines;
+// use crate::thing;
+// use crate::thing_lines;
+
+// mod thing;
+// mod thing_lines;
 
 #[macroquad::main("3D")]
 async fn main() {
@@ -18,7 +31,7 @@ async fn main() {
       pos: Vector3<f32>,
       sz: f32,
       color: Color,
-      speed: f64,
+      // speed: f64,
     }
 
     const NUM_CUBES: usize = 25000;
@@ -36,12 +49,12 @@ async fn main() {
         let y : f32 = (sn * rad) as f32;
         let sz = rand::gen_range(-1., 1.);
         let color = Color::new(rand::gen_range(0., 1.), rand::gen_range(0., 1.), rand::gen_range(0., 1.), 1.);
-        let speed = rand::gen_range(0., 2.*PI);
+        // let speed = rand::gen_range(0., 2.*PI);
         let cube = Cube {
           pos: Vector3::new(x, y, z),
           sz: sz,
           color: color,
-          speed: speed,
+          // speed: speed,
         };
         cubes.push(cube);
     }
@@ -61,7 +74,8 @@ async fn main() {
 
         set_camera(&Camera3D {
             // position: vec3(-20., 15., 0.),
-            position: vec3(rx as f32, 6., ry as f32),
+            // position: vec3(rx as f32, 6., ry as f32),
+            position: vec3(0.8, 6., 8.),
             up: vec3(0., 1., 0.),
             target: vec3(0., 0., 0.),
             ..Default::default()
@@ -97,17 +111,27 @@ async fn main() {
         //     let cr = rand::gen_range(-3., 3.);
         //     draw_cube_wires(vec3(x, y, z), vec3(cr, cr, cr), DARKGREEN);
         // }
-        for cube in &cubes {
-            let sz = cube.sz;
-            let pos = cube.pos;
 
-            // let axis  = Vector3::x_axis();
-            // let angle = get_time() * 1. * cube.speed;
-            // let _m     = Rotation3::from_axis_angle(&axis, angle);
+        // for cube in &cubes {
+        //     let sz = cube.sz;
+        //     let pos = cube.pos;
 
-            let v3 = vec3(pos.x, pos.y, pos.z);
-            draw_cube_wires(v3, vec3(sz, sz, sz), cube.color);
-        }
+        //     // let axis  = Vector3::x_axis();
+        //     // let angle = get_time() * 1. * cube.speed;
+        //     // let _m     = Rotation3::from_axis_angle(&axis, angle);
+
+        //     let v3 = vec3(pos.x, pos.y, pos.z);
+        //     draw_cube_wires(v3, vec3(sz, sz, sz), cube.color);
+        // }
+
+        let cube = make_cube();
+        // let rot = Rotation3::new(Vector3::z() * std::f32::consts::FRAC_PI_4);
+        // let rot = Rotation3::from_axis_angle(&Vector3::y_axis(), std::f32::consts::FRAC_PI_4);
+        // let tr = Isometry3::from_parts(Vector3::new(0, 0, 0), Vector3::y() * std::f32::consts::FRAC_PI_4);
+        let axisangle = Vector3::y() * std::f32::consts::FRAC_PI_4;
+        let tr = Isometry3::new(Vector3::new(0., 0., 3.), axisangle);
+        let cube2 = transform(cube, tr);
+        thing::lines::draw_thing(cube2);
 
         // Back to screen space, render some text
 
