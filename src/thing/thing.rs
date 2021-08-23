@@ -1,4 +1,4 @@
-use na::{Vector3, Point3, Rotation3, Isometry3};
+use na::{Point3, Isometry3};
 
 // pub mod thing;
 
@@ -9,12 +9,12 @@ pub struct Thing {
 }
 
 pub fn transform(t: Thing, tr: Isometry3<f32>) -> Thing {
-    let mut newPoints = Vec::with_capacity(t.points.len());
+    let mut new_points = Vec::with_capacity(t.points.len());
     for p in t.points {
-        newPoints.push(tr * p);
+        new_points.push(tr * p);
     }
     return Thing {
-        points: newPoints,
+        points: new_points,
         lines: t.lines,
     };
 }

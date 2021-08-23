@@ -3,10 +3,11 @@ extern crate nalgebra as na;
 use macroquad::prelude::*;
 use core::f64::consts::PI;
 //use na::{Vector3, Rotation3};
-use na::{Vector3, Rotation3, Isometry3};
+use na::{Vector3, Isometry3};
 use std::process::exit;
 
 mod thing;
+mod fiz;
 // use crate::thing::thing::Thing;
 use crate::thing::thing::make_cube;
 use crate::thing::thing::transform;
@@ -74,8 +75,8 @@ async fn main() {
 
         set_camera(&Camera3D {
             // position: vec3(-20., 15., 0.),
-            // position: vec3(rx as f32, 6., ry as f32),
-            position: vec3(0.8, 6., 8.),
+            position: vec3(rx as f32, 6., ry as f32),
+            // position: vec3(0.8, 6., 8.),
             up: vec3(0., 1., 0.),
             target: vec3(0., 0., 0.),
             ..Default::default()
@@ -132,6 +133,8 @@ async fn main() {
         let tr = Isometry3::new(Vector3::new(0., 0., 3.), axisangle);
         let cube2 = transform(cube, tr);
         thing::lines::draw_thing(cube2);
+
+        fiz::fiz_main();
 
         // Back to screen space, render some text
 
