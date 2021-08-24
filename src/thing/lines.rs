@@ -1,7 +1,7 @@
 // use na::{Vector3};
 use macroquad::prelude::*;
 // mod thing_lines;
-use crate::thing::thing::Thing;
+use crate::thing::Thing;
 
 pub fn draw_thing(th: Thing) {
     for line in th.lines {

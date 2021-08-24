@@ -41,7 +41,7 @@ pub fn fiz_main() {
     let mut force_generators = DefaultForceGeneratorSet::new();
 
     // loop {
-    for i in 0..4 {
+    for _i in 0..4 {
         // println!("ooo");
         // Run the simulation.
         mechanical_world.step(
@@ -52,7 +52,7 @@ pub fn fiz_main() {
             &mut force_generators
         );
         let body = bodies.rigid_body(handle).unwrap();
-        let x = body.position().translation.x;
+        let _x = body.position().translation.x;
         println!("oy {}", body.position());
         println!("oy2 {}", mechanical_world.timestep());
 // let platform = bodies.rigid_body_mut(platform_handle).unwrap();
