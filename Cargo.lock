@@ -374,10 +374,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "ncollide3d"
+name = "ncollide2d"
 version = "0.32.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "979e4b8af97817d8251b10bdf3ffc420abe1b8d28eb7e5e0193d575dca4c41a6"
+checksum = "1f272981acd57d7bfb6f7c6cd5c00f4c8c9168daa4958f04f2ba7fef1b6337df"
 dependencies = [
  "approx",
  "bitflags",
@@ -399,10 +399,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c44922cb3dbb1c70b5e5f443d63b64363a898564d739ba5198e3a9138442868d"
 
 [[package]]
-name = "nphysics3d"
+name = "nphysics2d"
 version = "0.24.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fe0f2f069d690580a8d332145fadaa1b84da53d8808140d10e5c5273fa9a80c7"
+checksum = "1a48841850d096166c857e56f5d0bde706e7c5bcb1769efb84013c97c18fae27"
 dependencies = [
  "approx",
  "bitflags",
@@ -412,7 +412,7 @@ dependencies = [
  "instant",
  "lazy_static",
  "nalgebra",
- "ncollide3d",
+ "ncollide2d",
  "num-traits",
  "simba",
  "slotmap",
@@ -978,6 +978,6 @@ version = "0.1.0"
 dependencies = [
  "macroquad",
  "nalgebra",
- "ncollide3d",
- "nphysics3d",
+ "ncollide2d",
+ "nphysics2d",
 ]

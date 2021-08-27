@@ -8,5 +8,5 @@ edition = "2018"
 [dependencies]
 macroquad = "0.3"
 nalgebra = "0.29"
-ncollide3d = "0.32"
-nphysics3d = "0.24"
+ncollide2d = "0.32"
+nphysics2d = "0.24"

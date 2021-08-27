@@ -1,29 +1,28 @@
 extern crate nalgebra as na;
-extern crate nphysics3d;
+extern crate nphysics2d;
 
-use na::Vector3;
-use nphysics3d::object::{DefaultBodySet, DefaultColliderSet};
-use nphysics3d::force_generator::DefaultForceGeneratorSet;
-use nphysics3d::joint::DefaultJointConstraintSet;
-use nphysics3d::world::{DefaultMechanicalWorld, DefaultGeometricalWorld};
-use nphysics3d::object::{RigidBodyDesc};
-use nphysics3d::math::{Velocity};
-use ncollide3d::shape::{ShapeHandle, Ball};
-// use ncollide3d::world::CollisionGroups;
-use nphysics3d::object::ColliderDesc;
-// use nphysics3d::material::{MaterialHandle, BasicMaterial};
-use nphysics3d::object::BodyPartHandle;
+use na::Vector;
+use na::Vector2;
+use nphysics2d::object::{DefaultBodySet, DefaultColliderSet};
+use nphysics2d::force_generator::DefaultForceGeneratorSet;
+use nphysics2d::joint::DefaultJointConstraintSet;
+use nphysics2d::world::{DefaultMechanicalWorld, DefaultGeometricalWorld};
+use nphysics2d::object::{RigidBodyDesc};
+use nphysics2d::math::{Velocity};
+use ncollide2d::shape::{ShapeHandle, Ball};
+use nphysics2d::object::ColliderDesc;
+use nphysics2d::object::BodyPartHandle;
 
 pub fn fiz_main() {
-    let mut mechanical_world = DefaultMechanicalWorld::new(Vector3::new(0.0, -9.81, 0.0));
+    let mut mechanical_world = DefaultMechanicalWorld::new(Vector2::new(0.0, 0.0));
     let mut geometrical_world = DefaultGeometricalWorld::new();
 
     let rigid_body = RigidBodyDesc::new()
-        .translation(Vector3::y() * 5.0)
+        .translation(Vector::y() * 5.0)
         .mass(1.2)
-        .gravity_enabled(true)
+        // .gravity_enabled(true)
         // .set_status(BodyStatus::Kinematic)
-        .velocity(Velocity::linear(1.0, 2.0, 3.0))
+        .velocity(Velocity::linear(1.0, 2.0))
         .build();
 
     let mut bodies = DefaultBodySet::new();
@@ -32,7 +31,7 @@ pub fn fiz_main() {
 
     let shape = ShapeHandle::new(Ball::new(1.5));
     let collider = ColliderDesc::new(shape)
-        .translation(Vector3::y() * 5.0)
+        .translation(Vector::y() * 5.0)
         .build(BodyPartHandle(handle, 0));
 
     let mut colliders = DefaultColliderSet::new();
@@ -41,7 +40,7 @@ pub fn fiz_main() {
     let mut force_generators = DefaultForceGeneratorSet::new();
 
     // loop {
-    for _i in 0..4 {
+    for i in 0..4 {
         // println!("ooo");
         // Run the simulation.
         mechanical_world.step(
@@ -53,7 +52,7 @@ pub fn fiz_main() {
         );
         let body = bodies.rigid_body(handle).unwrap();
         let _x = body.position().translation.x;
-        println!("oy {}", body.position());
+        println!("oy {} {}", i, body.position());
         println!("oy2 {}", mechanical_world.timestep());
 // let platform = bodies.rigid_body_mut(platform_handle).unwrap();
 //         let platform_z = platform.position().translation.z;
