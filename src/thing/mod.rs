@@ -4,7 +4,8 @@ use na::{Point3, Isometry3};
 
 // pub mod thing;
 
-// #[derive(Clone, Copy)]
+// OPT: don't clone em all the time
+#[derive(Clone)]
 pub struct Thing {
     pub points: Vec<Point3<f32>>,
     pub lines: Vec<(usize, usize)>,

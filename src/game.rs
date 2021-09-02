@@ -1,4 +1,5 @@
 use macroquad::prelude::*;
+use na::{Vector2};
 use na::{Vector3, Isometry3};
 use std::process::exit;
 
@@ -19,6 +20,15 @@ impl Game {
   }
 
   pub async fn main(&mut self) {
+    let cube = make_cube();
+    let axisangle = Vector3::y() * std::f32::consts::FRAC_PI_4;
+    let tr = Isometry3::new(Vector3::new(0., 0., 3.), axisangle);
+    let cube2 = transform(cube, tr);
+
+    // OPT: don't clone em all the time
+    #[allow(unused_variables)] // TODO remove
+    let cube_ft = self.fiz.add_thing(cube2.clone(), Vector2::y()*5.0, Vector2::new(1.0, 2.0));
+
     loop {
         clear_background(LIGHTGRAY);
 
@@ -43,13 +53,15 @@ impl Game {
 
         draw_grid(20, 1., BLACK, GRAY);
 
-        let cube = make_cube();
-        let axisangle = Vector3::y() * std::f32::consts::FRAC_PI_4;
-        let tr = Isometry3::new(Vector3::new(0., 0., 3.), axisangle);
-        let cube2 = transform(cube, tr);
-        crate::thing::lines::draw_thing(cube2);
+        // OPT: don't clone em all the time
+        crate::thing::lines::draw_thing(cube2.clone());
 
-        self.fiz.main();
+        self.fiz.step();
+
+        // let body = bodies.rigid_body(cube_ft.body_handle).unwrap();
+        // // let _x = body.position().translation.x;
+        // println!("oy {} {}", i, body.position());
+        // println!("oy2 {}", self.mechanical_world.timestep());
 
         // Back to screen space, render some text
 
