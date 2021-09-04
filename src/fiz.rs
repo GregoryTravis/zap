@@ -3,14 +3,14 @@ extern crate nphysics2d;
 
 // use na::Vector;
 use na::Vector2;
-use nphysics2d::object::{DefaultBodySet, DefaultColliderSet};
+use nphysics2d::object::{DefaultBodySet, DefaultColliderSet, Ground};
 use nphysics2d::force_generator::DefaultForceGeneratorSet;
 use nphysics2d::joint::DefaultJointConstraintSet;
 use nphysics2d::world::{// MechanicalWorld, GeometricalWorld,
   DefaultMechanicalWorld, DefaultGeometricalWorld};
 use nphysics2d::object::{RigidBodyDesc};
 use nphysics2d::math::{Velocity};
-use ncollide2d::shape::{ShapeHandle, Ball};
+use ncollide2d::shape::{ShapeHandle, Ball, Cuboid};
 use nphysics2d::object::ColliderDesc;
 use nphysics2d::object::{BodyPartHandle, DefaultColliderHandle, DefaultBodyHandle};
 
@@ -60,6 +60,7 @@ impl Fiz {
     let shape = ShapeHandle::new(Ball::new(1.5));
     let collider = ColliderDesc::new(shape)
         .translation(position)
+        .density(1.0)
         .build(BodyPartHandle(body_handle, 0));
 
     let collider_handle = self.collider_set.insert(collider);
@@ -69,6 +70,19 @@ impl Fiz {
       body_handle: body_handle,
       collider_handle: collider_handle,
     }
+  }
+
+  pub fn add_collider(&mut self, dim: Vector2<f32>, pos: Vector2<f32>) {
+    // wall
+    // let ground_size = r!(5.0);
+    let ground_shape = ShapeHandle::new(Cuboid::new(dim));
+
+    let ground_handle = self.body_set.insert(Ground::new());
+    let co = ColliderDesc::new(ground_shape)
+        .translation(pos)
+        .density(1.0)
+        .build(BodyPartHandle(ground_handle, 0));
+    self.collider_set.insert(co);
   }
 
   pub fn step(&mut self) {

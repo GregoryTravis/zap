@@ -22,12 +22,16 @@ impl Game {
   pub async fn main(&mut self) {
     let cube = make_cube();
     let axisangle = Vector3::y() * std::f32::consts::FRAC_PI_4;
-    let tr = Isometry3::new(Vector3::new(0., 0., 3.), axisangle);
-    let cube2 = transform(cube, tr);
+    // let tr = Isometry3::new(Vector3::new(0., 0., 3.), axisangle);
+    // let cube2 = transform(cube, tr);
 
     // OPT: don't clone em all the time
     #[allow(unused_variables)] // TODO remove
-    let cube_ft = self.fiz.add_thing(cube2.clone(), Vector2::y()*5.0, Vector2::new(1.0, 2.0));
+    let cube_ft = self.fiz.add_thing(cube.clone(), Vector2::y()*0.0, Vector2::new(3.0, 0.0));
+
+    // wall
+    // let ground_size = r!(5.0);
+    self.fiz.add_collider(Vector2::new(1.0, 5.0), Vector2::new(6.0, -2.5));
 
     loop {
         clear_background(LIGHTGRAY);
@@ -36,7 +40,10 @@ impl Game {
 
         let x = 10.;
         let y = 7.;
-        let ang = get_time() * 1.;
+        // let ang = get_time() * 1.;
+        let ang = core::f32::consts::PI/1.0;
+        // let ang: f32 = 0.0;
+        // let ang: f32 = 0.0; // 1.8;
         let c = ang.cos();
         let s = ang.sin();
         let rx = x * c + y * s;
@@ -54,7 +61,7 @@ impl Game {
         draw_grid(20, 1., BLACK, GRAY);
 
         // OPT: don't clone em all the time
-        crate::thing::lines::draw_thing(cube2.clone());
+        // crate::thing::lines::draw_thing(cube2.clone());
 
         self.fiz.step();
 
