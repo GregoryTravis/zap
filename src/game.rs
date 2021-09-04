@@ -58,10 +58,18 @@ impl Game {
 
         self.fiz.step();
 
-        // let body = bodies.rigid_body(cube_ft.body_handle).unwrap();
-        // // let _x = body.position().translation.x;
-        // println!("oy {} {}", i, body.position());
-        // println!("oy2 {}", self.mechanical_world.timestep());
+        let body = self.fiz.body_set.rigid_body(cube_ft.body_handle).unwrap();
+        // let _x = body.position().translation.x;
+        println!("oy {}", body.position());
+        println!("oy2 {}", self.fiz.mechanical_world.timestep());
+
+        // TODO always making copies
+        let cube_prime = make_cube();
+        let pos = body.position().translation;
+        let tr3 = Isometry3::new(Vector3::new(pos.x, 0., pos.y), axisangle);
+        let cube3 = transform(cube_prime, tr3);
+        // OPT: don't clone em all the time
+        crate::thing::lines::draw_thing(cube3.clone());
 
         // Back to screen space, render some text
 

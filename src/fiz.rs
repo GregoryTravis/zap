@@ -16,21 +16,21 @@ use nphysics2d::object::{BodyPartHandle, DefaultColliderHandle, DefaultBodyHandl
 
 use crate::thing::Thing;
 
-pub struct FizThing<'a> {
+pub struct FizThing {
+  // #[allow(dead_code)] // TODO remove
+  // fiz: &'a mut Fiz,
   #[allow(dead_code)] // TODO remove
-  fiz: &'a mut Fiz,
-  #[allow(dead_code)] // TODO remove
-  body_handle: DefaultBodyHandle,
+  pub body_handle: DefaultBodyHandle,
   #[allow(dead_code)] // TODO remove
   collider_handle: DefaultColliderHandle, 
 }
 
 pub struct Fiz {
-  mechanical_world: DefaultMechanicalWorld<f32>,
+  pub mechanical_world: DefaultMechanicalWorld<f32>,
   geometrical_world: DefaultGeometricalWorld<f32>,
   joint_constraints: DefaultJointConstraintSet<f32>,
   force_generators: DefaultForceGeneratorSet<f32>,
-  body_set: DefaultBodySet<f32>,
+  pub body_set: DefaultBodySet<f32>,
   collider_set: DefaultColliderSet<f32>,
 }
 
@@ -65,7 +65,7 @@ impl Fiz {
     let collider_handle = self.collider_set.insert(collider);
 
     return FizThing {
-      fiz: self,
+      // fiz: self,
       body_handle: body_handle,
       collider_handle: collider_handle,
     }
