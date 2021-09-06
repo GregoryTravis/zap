@@ -4,6 +4,7 @@ extern crate nphysics2d;
 // use na::Vector;
 use na::Vector2;
 use nphysics2d::object::{DefaultBodySet, DefaultColliderSet, Ground};
+use nphysics2d::material::{MaterialHandle, BasicMaterial};
 use nphysics2d::force_generator::DefaultForceGeneratorSet;
 use nphysics2d::joint::DefaultJointConstraintSet;
 use nphysics2d::world::{// MechanicalWorld, GeometricalWorld,
@@ -61,6 +62,7 @@ impl Fiz {
     let collider = ColliderDesc::new(shape)
         .translation(position)
         .density(1.0)
+        .material(MaterialHandle::new(BasicMaterial::new(0.3, 0.8)))
         .build(BodyPartHandle(body_handle, 0));
 
     let collider_handle = self.collider_set.insert(collider);
@@ -81,6 +83,7 @@ impl Fiz {
     let co = ColliderDesc::new(ground_shape)
         .translation(pos)
         .density(1.0)
+        .material(MaterialHandle::new(BasicMaterial::new(0.3, 0.8)))
         .build(BodyPartHandle(ground_handle, 0));
     self.collider_set.insert(co);
   }
