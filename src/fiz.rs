@@ -69,7 +69,7 @@ impl Fiz {
     let collider = ColliderDesc::new(shape)
         // .translation(position)
         .density(1.0)
-        .material(MaterialHandle::new(BasicMaterial::new(0.3, 0.8)))
+        .material(MaterialHandle::new(BasicMaterial::new(1.0, 0.8)))
         .build(BodyPartHandle(body_handle, 0));
 
     let collider_handle = self.collider_set.insert(collider);
