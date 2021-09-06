@@ -4,6 +4,8 @@ extern crate nphysics2d;
 // use na::Vector;
 use na::Vector2;
 use nphysics2d::object::{DefaultBodySet, DefaultColliderSet, Ground};
+use na::{Vector3, Isometry3};
+use crate::thing::transform;
 use nphysics2d::material::{MaterialHandle, BasicMaterial};
 use nphysics2d::force_generator::DefaultForceGeneratorSet;
 use nphysics2d::joint::DefaultJointConstraintSet;
@@ -89,6 +91,19 @@ impl Fiz {
         .material(MaterialHandle::new(BasicMaterial::new(0.3, 0.8)))
         .build(BodyPartHandle(ground_handle, 0));
     self.collider_set.insert(co);
+  }
+
+  pub fn current(&self, thing: Thing, ft: &FizThing) -> Thing {
+    let body = self.body_set.rigid_body(ft.body_handle).unwrap();
+    println!("oy {}", body.position());
+    println!("oy2 {}", self.mechanical_world.timestep());
+
+    // TODO always making copies
+    let pos = body.position().translation;
+    let rot: f32 = body.position().rotation.angle();
+    let tr3 = Isometry3::new(Vector3::new(pos.x, 0., pos.y), Vector3::y() * rot);
+    let thing_current = transform(thing, tr3);
+    return thing_current;
   }
 
   pub fn step(&mut self) {

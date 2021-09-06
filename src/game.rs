@@ -1,12 +1,11 @@
 use macroquad::prelude::*;
 use na::{Vector2};
-use na::{Vector3, Isometry3};
 use std::process::exit;
 
 use crate::fiz::Fiz;
 // use crate::thing::lines;
 use crate::thing::make_cube;
-use crate::thing::transform;
+// use crate::thing::transform;
 
 pub struct Game {
   pub fiz: Fiz,
@@ -65,19 +64,20 @@ impl Game {
 
         self.fiz.step();
 
-        let body = self.fiz.body_set.rigid_body(cube_ft.body_handle).unwrap();
-        // let _x = body.position().translation.x;
-        println!("oy {}", body.position());
-        println!("oy2 {}", self.fiz.mechanical_world.timestep());
+        // let body = self.fiz.body_set.rigid_body(cube_ft.body_handle).unwrap();
+        // // let _x = body.position().translation.x;
+        // println!("oy {}", body.position());
+        // println!("oy2 {}", self.fiz.mechanical_world.timestep());
 
-        // TODO always making copies
-        let cube_prime = make_cube();
-        let pos = body.position().translation;
-        let rot: f32 = body.position().rotation.angle();
-        let tr3 = Isometry3::new(Vector3::new(pos.x, 0., pos.y), Vector3::y() * rot);
-        let cube3 = transform(cube_prime, tr3);
-        // OPT: don't clone em all the time
-        crate::thing::lines::draw_thing(cube3.clone());
+        // // TODO always making copies
+        // let cube_prime = make_cube();
+        // let pos = body.position().translation;
+        // let rot: f32 = body.position().rotation.angle();
+        // let tr3 = Isometry3::new(Vector3::new(pos.x, 0., pos.y), Vector3::y() * rot);
+        // let cube3 = transform(cube_prime, tr3);
+        // // OPT: don't clone em all the time
+        let cube_current = self.fiz.current(cube.clone(), &cube_ft);
+        crate::thing::lines::draw_thing(cube_current.clone());
 
         // Back to screen space, render some text
 
