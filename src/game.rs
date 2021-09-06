@@ -29,7 +29,9 @@ impl Game {
 
     // OPT: don't clone em all the time
     #[allow(unused_variables)] // TODO remove
-    let cube_ft = self.fiz.add_thing(&cube, Vector2::new(0.0, -3.0), 0.9*3.14159265*0.25, Vector2::new(15.0, 0.0), false);
+    // let rot = 0.9*3.14159265*0.25:
+    let rot = 0.0;
+    let cube_ft = self.fiz.add_thing(&cube, Vector2::new(0.0, -1.0), rot, Vector2::new(15.0, 0.0), false);
     fiz_things.push(cube_ft);
 
     // wall
