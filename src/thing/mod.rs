@@ -1,6 +1,7 @@
 pub mod lines;
 
 use na::{Point3, Isometry3, Point2};
+use ncollide2d::shape::{ShapeHandle, ConvexPolygon};
 
 // pub mod thing;
 
@@ -58,5 +59,12 @@ pub fn make_cuboid(x: f32, y: f32, z: f32) -> Thing {
 impl Thing {
   pub fn points2d(&self) -> Vec<Point2<f32>> {
     return self.points.iter().map(|&v3| Point2::new(v3.x, v3.y)).collect::<Vec<_>>();
+  }
+
+  pub fn to_shape_handle(&self) -> ShapeHandle<f32> {
+    let pts2 = self.points2d();
+    let ch = ConvexPolygon::try_from_points(&pts2).expect("convex hull");
+    let shape = ShapeHandle::new(ch);
+    return shape;
   }
 }

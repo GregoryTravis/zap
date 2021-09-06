@@ -5,6 +5,7 @@ use std::process::exit;
 use crate::fiz::Fiz;
 // use crate::thing::lines;
 use crate::thing::make_cube;
+use crate::thing::make_cuboid;
 // use crate::thing::transform;
 
 pub struct Game {
@@ -26,11 +27,12 @@ impl Game {
 
     // OPT: don't clone em all the time
     #[allow(unused_variables)] // TODO remove
-    let cube_ft = self.fiz.add_thing(cube.clone(), Vector2::y()*0.0, 0.9*3.14159265*0.25, Vector2::new(15.0, 0.0));
+    let cube_ft = self.fiz.add_thing(cube.clone(), Vector2::y()*0.0, 0.9*3.14159265*0.25, Vector2::new(15.0, 0.0), false);
 
     // wall
     // let ground_size = r!(5.0);
-    self.fiz.add_collider(Vector2::new(1.0, 5.0), Vector2::new(16.0, -2.5));
+    let wall_cuboid = make_cuboid(1.0, 3.0, 5.0);
+    let wall_ft = self.fiz.add_thing(wall_cuboid, Vector2::new(16.0, -2.5), 0.05, Vector2::new(0.0, 0.0), true);
 
     loop {
         clear_background(LIGHTGRAY);
@@ -66,6 +68,8 @@ impl Game {
 
         let cube_current = self.fiz.current(&cube_ft);
         crate::thing::lines::draw_thing(cube_current.clone());
+        let wall_current = self.fiz.current(&wall_ft);
+        crate::thing::lines::draw_thing(wall_current.clone());
 
         // Back to screen space, render some text
 

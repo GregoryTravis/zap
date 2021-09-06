@@ -3,7 +3,7 @@ extern crate nphysics2d;
 
 // use na::Vector;
 use na::Vector2;
-use nphysics2d::object::{DefaultBodySet, DefaultColliderSet, Ground};
+use nphysics2d::object::{DefaultBodySet, DefaultColliderSet, BodyStatus};
 use na::{Vector3, Isometry3};
 use crate::thing::transform;
 use nphysics2d::material::{MaterialHandle, BasicMaterial};
@@ -13,7 +13,7 @@ use nphysics2d::world::{// MechanicalWorld, GeometricalWorld,
   DefaultMechanicalWorld, DefaultGeometricalWorld};
 use nphysics2d::object::{RigidBodyDesc};
 use nphysics2d::math::{Velocity};
-use ncollide2d::shape::{ShapeHandle, ConvexPolygon, Cuboid};
+// use ncollide2d::shape::{ShapeHandle, ConvexPolygon, Cuboid};
 use nphysics2d::object::ColliderDesc;
 use nphysics2d::object::{BodyPartHandle, DefaultColliderHandle, DefaultBodyHandle};
 
@@ -50,10 +50,13 @@ impl Fiz {
     };
   }
 
-  pub fn add_thing(&mut self, thing: Thing, position: Vector2<f32>, rotation: f32, velocity: Vector2<f32>) -> FizThing {
+  pub fn add_thing(&mut self, thing: Thing, position: Vector2<f32>, rotation: f32, velocity: Vector2<f32>, is_wall: bool) -> FizThing {
+
+    let body_status = if is_wall { BodyStatus::Static } else { BodyStatus::Dynamic };
     let rigid_body = RigidBodyDesc::new()
         .translation(position)
         .rotation(rotation)
+        .status(body_status)
         .mass(1.2)
         // .gravity_enabled(true)
         // .set_status(BodyStatus::Kinematic)
@@ -62,11 +65,9 @@ impl Fiz {
 
     let body_handle = self.body_set.insert(rigid_body);
 
-    let pts2 = thing.points2d();
-    let ch = ConvexPolygon::try_from_points(&pts2).expect("convex hull");
-    let shape = ShapeHandle::new(ch);
+    let shape = thing.to_shape_handle();
     let collider = ColliderDesc::new(shape)
-        .translation(position)
+        // .translation(position)
         .density(1.0)
         .material(MaterialHandle::new(BasicMaterial::new(0.3, 0.8)))
         .build(BodyPartHandle(body_handle, 0));
@@ -80,20 +81,6 @@ impl Fiz {
       body_handle: body_handle,
       collider_handle: collider_handle,
     }
-  }
-
-  pub fn add_collider(&mut self, dim: Vector2<f32>, pos: Vector2<f32>) {
-    // wall
-    // let ground_size = r!(5.0);
-    let ground_shape = ShapeHandle::new(Cuboid::new(dim));
-
-    let ground_handle = self.body_set.insert(Ground::new());
-    let co = ColliderDesc::new(ground_shape)
-        .translation(pos)
-        .density(1.0)
-        .material(MaterialHandle::new(BasicMaterial::new(0.3, 0.8)))
-        .build(BodyPartHandle(ground_handle, 0));
-    self.collider_set.insert(co);
   }
 
   pub fn current(&self, ft: &FizThing) -> Thing {
