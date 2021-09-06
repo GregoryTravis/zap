@@ -26,11 +26,11 @@ impl Game {
 
     // OPT: don't clone em all the time
     #[allow(unused_variables)] // TODO remove
-    let cube_ft = self.fiz.add_thing(cube.clone(), Vector2::y()*0.0, 0.9*3.14159265*0.25, Vector2::new(3.0, 0.0));
+    let cube_ft = self.fiz.add_thing(cube.clone(), Vector2::y()*0.0, 0.9*3.14159265*0.25, Vector2::new(15.0, 0.0));
 
     // wall
     // let ground_size = r!(5.0);
-    self.fiz.add_collider(Vector2::new(1.0, 5.0), Vector2::new(6.0, -2.5));
+    self.fiz.add_collider(Vector2::new(1.0, 5.0), Vector2::new(16.0, -2.5));
 
     loop {
         clear_background(LIGHTGRAY);
