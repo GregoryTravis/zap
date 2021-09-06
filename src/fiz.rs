@@ -50,7 +50,7 @@ impl Fiz {
     };
   }
 
-  pub fn add_thing(&mut self, thing: Thing, position: Vector2<f32>, rotation: f32, velocity: Vector2<f32>, is_wall: bool) -> FizThing {
+  pub fn add_thing(&mut self, thing: &Thing, position: Vector2<f32>, rotation: f32, velocity: Vector2<f32>, is_wall: bool) -> FizThing {
 
     let body_status = if is_wall { BodyStatus::Static } else { BodyStatus::Dynamic };
     let rigid_body = RigidBodyDesc::new()

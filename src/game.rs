@@ -20,6 +20,8 @@ impl Game {
   }
 
   pub async fn main(&mut self) {
+    let mut fiz_things = Vec::new();
+
     let cube = make_cube();
     // let axisangle = Vector3::y() * std::f32::consts::FRAC_PI_4;
     // let tr = Isometry3::new(Vector3::new(0., 0., 3.), axisangle);
@@ -27,12 +29,16 @@ impl Game {
 
     // OPT: don't clone em all the time
     #[allow(unused_variables)] // TODO remove
-    let cube_ft = self.fiz.add_thing(cube.clone(), Vector2::y()*0.0, 0.9*3.14159265*0.25, Vector2::new(15.0, 0.0), false);
+    let cube_ft = self.fiz.add_thing(&cube, Vector2::new(0.0, 0.0), 0.9*3.14159265*0.25, Vector2::new(15.0, 0.0), false);
+    fiz_things.push(cube_ft);
 
     // wall
     // let ground_size = r!(5.0);
-    let wall_cuboid = make_cuboid(1.0, 3.0, 5.0);
-    let wall_ft = self.fiz.add_thing(wall_cuboid, Vector2::new(16.0, -2.5), 0.05, Vector2::new(0.0, 0.0), true);
+    let wall_cuboid = make_cuboid(1.0, 3.0, 15.0);
+    fiz_things.push(
+      self.fiz.add_thing(&wall_cuboid, Vector2::new(10.0, -0.5), 0.0, Vector2::new(0.0, 0.0), true));
+    fiz_things.push(
+      self.fiz.add_thing(&wall_cuboid, Vector2::new(-10.0, -0.5), 0.0, Vector2::new(0.0, 0.0), true));
 
     loop {
         clear_background(LIGHTGRAY);
@@ -52,7 +58,7 @@ impl Game {
 
         set_camera(&Camera3D {
             // position: vec3(-20., 15., 0.),
-            position: vec3(rx as f32, 6., ry as f32),
+            position: vec3(rx as f32, 16., ry as f32),
             // position: vec3(0.8, 6., 8.),
             up: vec3(0., 1., 0.),
             target: vec3(0., 0., 0.),
@@ -66,10 +72,15 @@ impl Game {
 
         self.fiz.step();
 
-        let cube_current = self.fiz.current(&cube_ft);
-        crate::thing::lines::draw_thing(cube_current.clone());
-        let wall_current = self.fiz.current(&wall_ft);
-        crate::thing::lines::draw_thing(wall_current.clone());
+        for ft in &fiz_things {
+          let current = self.fiz.current(&ft);
+          crate::thing::lines::draw_thing(current.clone());
+        }
+
+        // let cube_current = self.fiz.current(&cube_ft);
+        // crate::thing::lines::draw_thing(cube_current.clone());
+        // let wall_current = self.fiz.current(&wall_ft);
+        // crate::thing::lines::draw_thing(wall_current.clone());
 
         // Back to screen space, render some text
 
