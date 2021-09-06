@@ -1,6 +1,6 @@
 pub mod lines;
 
-use na::{Point3, Isometry3};
+use na::{Point3, Isometry3, Point2};
 
 // pub mod thing;
 
@@ -57,4 +57,10 @@ pub fn make_cube() -> Thing {
           (0, 7),
       ],
     };
+}
+
+impl Thing {
+  pub fn points2d(&self) -> Vec<Point2<f32>> {
+    return self.points.iter().map(|&v3| Point2::new(v3.x, v3.y)).collect::<Vec<_>>();
+  }
 }

@@ -11,7 +11,7 @@ use nphysics2d::world::{// MechanicalWorld, GeometricalWorld,
   DefaultMechanicalWorld, DefaultGeometricalWorld};
 use nphysics2d::object::{RigidBodyDesc};
 use nphysics2d::math::{Velocity};
-use ncollide2d::shape::{ShapeHandle, Ball, Cuboid};
+use ncollide2d::shape::{ShapeHandle, ConvexPolygon, Cuboid};
 use nphysics2d::object::ColliderDesc;
 use nphysics2d::object::{BodyPartHandle, DefaultColliderHandle, DefaultBodyHandle};
 
@@ -47,7 +47,7 @@ impl Fiz {
     };
   }
 
-  pub fn add_thing(&mut self, _thing: Thing, position: Vector2<f32>, velocity: Vector2<f32>) -> FizThing {
+  pub fn add_thing(&mut self, thing: Thing, position: Vector2<f32>, velocity: Vector2<f32>) -> FizThing {
     let rigid_body = RigidBodyDesc::new()
         .translation(position)
         .mass(1.2)
@@ -58,7 +58,9 @@ impl Fiz {
 
     let body_handle = self.body_set.insert(rigid_body);
 
-    let shape = ShapeHandle::new(Ball::new(1.5));
+    let pts2 = thing.points2d();
+    let ch = ConvexPolygon::try_from_points(&pts2).expect("convex hull");
+    let shape = ShapeHandle::new(ch);
     let collider = ColliderDesc::new(shape)
         .translation(position)
         .density(1.0)
