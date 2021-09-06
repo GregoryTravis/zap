@@ -21,13 +21,13 @@ impl Game {
 
   pub async fn main(&mut self) {
     let cube = make_cube();
-    let axisangle = Vector3::y() * std::f32::consts::FRAC_PI_4;
+    // let axisangle = Vector3::y() * std::f32::consts::FRAC_PI_4;
     // let tr = Isometry3::new(Vector3::new(0., 0., 3.), axisangle);
     // let cube2 = transform(cube, tr);
 
     // OPT: don't clone em all the time
     #[allow(unused_variables)] // TODO remove
-    let cube_ft = self.fiz.add_thing(cube.clone(), Vector2::y()*0.0, Vector2::new(3.0, 0.0));
+    let cube_ft = self.fiz.add_thing(cube.clone(), Vector2::y()*0.0, 0.9*3.14159265*0.25, Vector2::new(3.0, 0.0));
 
     // wall
     // let ground_size = r!(5.0);
@@ -73,7 +73,8 @@ impl Game {
         // TODO always making copies
         let cube_prime = make_cube();
         let pos = body.position().translation;
-        let tr3 = Isometry3::new(Vector3::new(pos.x, 0., pos.y), axisangle);
+        let rot: f32 = body.position().rotation.angle();
+        let tr3 = Isometry3::new(Vector3::new(pos.x, 0., pos.y), Vector3::y() * rot);
         let cube3 = transform(cube_prime, tr3);
         // OPT: don't clone em all the time
         crate::thing::lines::draw_thing(cube3.clone());

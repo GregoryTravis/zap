@@ -23,24 +23,20 @@ pub fn transform(t: Thing, tr: Isometry3<f32>) -> Thing {
 }
 
 pub fn make_cube() -> Thing {
+  return make_cuboid(1.0, 1.0, 1.0);
+}
+
+pub fn make_cuboid(x: f32, y: f32, z: f32) -> Thing {
   return Thing {
       points: vec![
-          // Vector3::new( 0.5, 0.5, 0.5),
-          // Vector3::new(-0.5, 0.5, 0.5),
-          // Vector3::new(-0.5,-0.5, 0.5),
-          // Vector3::new( 0.5,-0.5, 0.5),
-          // Vector3::new( 0.5,-0.5,-0.5),
-          // Vector3::new(-0.5,-0.5,-0.5),
-          // Vector3::new(-0.5, 0.5,-0.5),
-          // Vector3::new( 0.5, 0.5,-0.5),
-          Point3::new( 3.5, 0.5, 0.5),
-          Point3::new(-0.5, 0.5, 0.5),
-          Point3::new(-0.5,-0.5, 0.5),
-          Point3::new( 3.5,-0.5, 0.5),
-          Point3::new( 3.5,-0.5,-0.5),
-          Point3::new(-0.5,-0.5,-0.5),
-          Point3::new(-0.5, 0.5,-0.5),
-          Point3::new( 3.5, 0.5,-0.5),
+          Point3::new( x,  y,  z),
+          Point3::new(-x,  y,  z),
+          Point3::new(-x, -y,  z),
+          Point3::new( x, -y,  z),
+          Point3::new( x, -y, -z),
+          Point3::new(-x, -y, -z),
+          Point3::new(-x,  y, -z),
+          Point3::new( x,  y, -z),
       ],
       lines: vec![
           (0, 1),

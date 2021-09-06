@@ -47,9 +47,10 @@ impl Fiz {
     };
   }
 
-  pub fn add_thing(&mut self, thing: Thing, position: Vector2<f32>, velocity: Vector2<f32>) -> FizThing {
+  pub fn add_thing(&mut self, thing: Thing, position: Vector2<f32>, rotation: f32, velocity: Vector2<f32>) -> FizThing {
     let rigid_body = RigidBodyDesc::new()
         .translation(position)
+        .rotation(rotation)
         .mass(1.2)
         // .gravity_enabled(true)
         // .set_status(BodyStatus::Kinematic)
