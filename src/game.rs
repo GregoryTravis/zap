@@ -64,7 +64,7 @@ impl Game {
 
         self.fiz.step();
 
-        let cube_current = self.fiz.current(cube.clone(), &cube_ft);
+        let cube_current = self.fiz.current(&cube_ft);
         crate::thing::lines::draw_thing(cube_current.clone());
 
         // Back to screen space, render some text

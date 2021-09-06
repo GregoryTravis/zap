@@ -22,6 +22,7 @@ use crate::thing::Thing;
 pub struct FizThing {
   // #[allow(dead_code)] // TODO remove
   // fiz: &'a mut Fiz,
+  pub thing: Thing,
   #[allow(dead_code)] // TODO remove
   pub body_handle: DefaultBodyHandle,
   #[allow(dead_code)] // TODO remove
@@ -74,6 +75,8 @@ impl Fiz {
 
     return FizThing {
       // fiz: self,
+      // OPT no clone
+      thing: thing.clone(),
       body_handle: body_handle,
       collider_handle: collider_handle,
     }
@@ -93,7 +96,7 @@ impl Fiz {
     self.collider_set.insert(co);
   }
 
-  pub fn current(&self, thing: Thing, ft: &FizThing) -> Thing {
+  pub fn current(&self, ft: &FizThing) -> Thing {
     let body = self.body_set.rigid_body(ft.body_handle).unwrap();
     println!("oy {}", body.position());
     println!("oy2 {}", self.mechanical_world.timestep());
@@ -102,7 +105,8 @@ impl Fiz {
     let pos = body.position().translation;
     let rot: f32 = body.position().rotation.angle();
     let tr3 = Isometry3::new(Vector3::new(pos.x, 0., pos.y), Vector3::y() * rot);
-    let thing_current = transform(thing, tr3);
+    // OPT no clone
+    let thing_current = transform(ft.thing.clone(), tr3);
     return thing_current;
   }
 
