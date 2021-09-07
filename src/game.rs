@@ -36,7 +36,7 @@ impl Game {
 
     // wall
     // let ground_size = r!(5.0);
-    let wall_cuboid = make_cuboid(1.0, 3.0, 15.0);
+    let wall_cuboid = make_cuboid(1.0, 15.0, 15.0);
     fiz_things.push(
       self.fiz.add_thing(&wall_cuboid, Vector2::new(10.0, 0.), 0.0, Vector2::new(0.0, 0.0), true));
     fiz_things.push(

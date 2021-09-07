@@ -85,8 +85,6 @@ impl Fiz {
 
   pub fn current(&self, ft: &FizThing) -> Thing {
     let body = self.body_set.rigid_body(ft.body_handle).unwrap();
-    println!("oy {}", body.position());
-    println!("oy2 {}", self.mechanical_world.timestep());
 
     // TODO always making copies
     let pos = body.position().translation;
