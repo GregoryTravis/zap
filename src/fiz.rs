@@ -89,9 +89,9 @@ impl Fiz {
     // TODO always making copies
     let pos = body.position().translation;
     let rot: f32 = body.position().rotation.angle();
-    let tr3 = Isometry3::new(Vector3::new(pos.x, 0., pos.y), Vector3::y() * rot);
+    let tr3 = Isometry3::new(Vector3::new(pos.x, pos.y, 0.), Vector3::z() * rot);
     // OPT no clone
-    let thing_current = transform(ft.thing.clone(), tr3);
+    let thing_current = transform(&ft.thing, tr3);
     return thing_current;
   }
 

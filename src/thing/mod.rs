@@ -2,6 +2,7 @@ pub mod lines;
 
 use na::{Point3, Isometry3, Point2};
 use ncollide2d::shape::{ShapeHandle, ConvexPolygon};
+use std::convert::TryInto;
 
 // pub mod thing;
 
@@ -12,19 +13,33 @@ pub struct Thing {
     pub lines: Vec<(usize, usize)>,
 }
 
-pub fn transform(t: Thing, tr: Isometry3<f32>) -> Thing {
+pub fn transform(t: &Thing, tr: Isometry3<f32>) -> Thing {
     let mut new_points = Vec::with_capacity(t.points.len());
-    for p in t.points {
+    for p in &t.points {
         new_points.push(tr * p);
     }
     return Thing {
         points: new_points,
-        lines: t.lines,
+        lines: t.lines.clone(),
     };
 }
 
+pub fn make_thing_from_point_pairs(pps: &Vec<(Point3<f32>, Point3<f32>)>) -> Thing {
+  let mut points: Vec<Point3<f32>> = Vec::with_capacity(pps.len() * 2);
+  let mut lines: Vec<(usize, usize)> = Vec::with_capacity(pps.len());
+  for (i, (a, b)) in pps.iter().enumerate() {
+    points.push(*a);
+    points.push(*b);
+    lines.push((i * 2, i * 2 + 1));
+  }
+  return Thing {
+    points: points,
+    lines: lines,
+  };
+}
+
 pub fn make_cube() -> Thing {
-  return make_cuboid(1.0, 1.0, 1.0);
+  return make_cuboid(0.5, 0.5, 0.5);
 }
 
 pub fn make_cuboid(x: f32, y: f32, z: f32) -> Thing {
@@ -54,6 +69,19 @@ pub fn make_cuboid(x: f32, y: f32, z: f32) -> Thing {
           (0, 7),
       ],
     };
+}
+
+pub fn make_grid_xy(half_size: u32) -> Thing {
+  let c = half_size * 2 + 1;
+  let hs = half_size as i32;
+  let fhs = half_size as f32;
+  let mut pps: Vec<(Point3<f32>, Point3<f32>)> = Vec::with_capacity((c*2).try_into().unwrap());
+  for i in -hs..=hs {
+    let fi = i as f32;
+    pps.push((Point3::new(fi, -fhs, 0.), Point3::new(fi, fhs, 0.)));
+    pps.push((Point3::new(-fhs, fi, 0.), Point3::new(fhs, fi, 0.)));
+  };
+  return make_thing_from_point_pairs(&pps);
 }
 
 impl Thing {
