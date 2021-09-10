@@ -16,6 +16,7 @@ use nphysics2d::math::{Velocity};
 // use ncollide2d::shape::{ShapeHandle, ConvexPolygon, Cuboid};
 use nphysics2d::object::ColliderDesc;
 use nphysics2d::object::{BodyPartHandle, DefaultColliderHandle, DefaultBodyHandle};
+// use ncollide2d::narrow_phase::ContactEvent::Started;
 
 use crate::thing::Thing;
 
@@ -74,6 +75,7 @@ impl Fiz {
 
     let collider_handle = self.collider_set.insert(collider);
 
+    // let foo: f32 = body_handle;
     return FizThing {
       // fiz: self,
       // OPT no clone
@@ -103,5 +105,17 @@ impl Fiz {
         &mut self.joint_constraints,
         &mut self.force_generators
     );
+    for contact in self.geometrical_world.contact_events() {
+      // Handle contact events.
+      // let foo: f32 = contact;
+      println!("HEY {:?}", contact);
+      // match contact {
+      //    Started(h0, h1) => {
+      //      // let foo: f32 = h0;
+      //      let rbh0 = self.collider_set.get(*h0).unwrap().body();
+      //      let rb0: u32 = self.body_set.get(rbh0).unwrap();
+      //    }
+      //  }
+    }
   }
 }
