@@ -76,13 +76,15 @@ impl Fiz {
     let collider_handle = self.collider_set.insert(collider);
 
     // let foo: f32 = body_handle;
-    return FizThing {
+    let ft = FizThing {
       // fiz: self,
       // OPT no clone
       thing: thing.clone(),
       body_handle: body_handle,
       collider_handle: collider_handle,
-    }
+    };
+    // rigid_body.set_user_data(Some(Box::new(ft)));
+    return ft;
   }
 
   pub fn current(&self, ft: &FizThing) -> Thing {
